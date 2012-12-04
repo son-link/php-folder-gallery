@@ -3,12 +3,10 @@
 # (CC) Alfonso Saavedra "Son Link"
 # Bajo GPLv3
 
-ini_set("display_errors", 1);
 if (!empty($_GET['img'])){
 	$size  = 150; // Tamaño a definir (ancho)
-	$format;
-	$img = $_GET['img'];
 	$square = true;
+	$img = $_GET['img'];
 	if ( !preg_match_all('[^\/|\.\/|\.\.\/]', $img) && is_file($img)){
 		$img_info = pathinfo($img);
 		# obtenemos las extensiones de los archivos para llamar a la función correspondiente
@@ -32,7 +30,7 @@ if (!empty($_GET['img'])){
 				imagedestroy($image);
 				header("location: $img");
 			}else{
-				if ($square){
+				if ($square == true){
 					$w_ratio = ($size / $width);
 					$h_ratio = ($size / $height);
 
