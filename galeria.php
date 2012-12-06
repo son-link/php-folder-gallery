@@ -1,6 +1,9 @@
 <html>
 	<head>
 		<title>Galeria en subcarpetas</title>
+		<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen" />
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/lightbox.js"></script>
 	</head>
 	<body>
 <?php
@@ -10,19 +13,26 @@
 
 # Configuración del script
 # Directorio donde están las imágenes. NO usar rutas relativas (p.e: ../galeria o ./galeria)
+ini_set("display_errors", 1);
 $path = 'fotos';
-$limit = 20; # Cuantas imágenes se mostraran por pagina
+$limit = 20; # Cuantas imáenes se mostraran por pagina
 $limit_file = 5; # Imágenes a mostrar por linea en la tabla
 $n = 0;
 $desde;
 $hasta;
-$list = [];
+$list = array();
 # Comprobamos si es un directorio y si lo es nos movemos a el
 if (is_dir($path)){
 	if (!isset($_GET['gal'])){
-		foreach(glob("$path/*", GLOB_ONLYDIR ) as $folder) {
-			$folder = split('/', $folder)[1];
-			echo "<a href=\"?gal=$folder\">" . $folder . "</a><br />";
+		$folders = glob("$path/*", GLOB_ONLYDIR);
+		if ($folders){
+			foreach($folders as $folder) {
+				print $folder;
+				$folder = preg_replace("/$path\//" ,'', $folder);
+				print "<a href=\"?gal=$folder\">" . $folder . "</a><br />\n";
+			}
+		}else{
+			print "$path no contiene ninguna subcarpeta";
 		}
 	}else{
 		$dir = $path.'/'.$_GET['gal'];
@@ -42,7 +52,7 @@ if (is_dir($path)){
 			$hasta = $desde + $limit;
 		}else if((int)$_GET['pg'] > ($paginas-1)){
 			# Si pg es mayor que el total de paginas se muestra un error
-			echo "<b>No existe esta pagina en la galería</b>
+			print "<b>No existe esta pagina en la galería</b>
 			<a href='index.php'>Volver a la galería</a>";
 			die();
 		}else{
@@ -54,11 +64,11 @@ if (is_dir($path)){
 		for ($i=($desde*$limit);($i<=$total) && ($i<($desde*$limit)+$limit);$i++){
 		# Comprobamos si existe en la lista una llave con el valor actual de $i para evitar errores
 			if(array_key_exists($i, $list)){
-				echo "<td><a href='$list[$i]'><img src='thumb.php?img=$list[$i]' /></a>
+				print "<td><a href='$list[$i]' ><img src='thumb.php?img=$list[$i]' /></a>
 				</td>\n";
 				$n++;
 				if ($n == $limit_file){
-					echo "</tr>\n<tr>\n";
+					print "</tr>\n<tr>\n";
 					$n = 0;
 				}
 			}
@@ -69,15 +79,15 @@ if (is_dir($path)){
 		for ($p = 0; $p<$paginas; $p++){
 			$pg = $p+1;
 			if ($p == $desde){
-			echo "$pg ";
+			print "$pg ";
 		}else{
-			echo "<a href ='?gal={$_GET['gal']}&pg=$p'>$pg</a> ";
+			print "<a href ='?gal={$_GET['gal']}&pg=$p'>$pg</a> ";
 		}
 	}
 	print "</p>\nHay un total de $total imagen(es) en $paginas paginas(s)";
 	}
 }else{
-	echo "$path no es un directorio";
+	print "$path no es un directorio";
 }
 ?>
 	</body>

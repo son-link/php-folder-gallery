@@ -1,0 +1,4 @@
+r3:
+	* Solucionado un fallo en galeria.php
+	* Ahora comprueba que en la ruta indicada haya subcarpetas
+	* Añadidos los archivos CHANGELOG y COPYING
