@@ -2,3 +2,7 @@ r3:
 	* Solucionado un fallo en galeria.php
 	* Ahora comprueba que en la ruta indicada haya subcarpetas
 	* Añadidos los archivos CHANGELOG y COPYING
+
+r4:
+	* Ahora puede usarse como galería única (una sola carpeta) o multi galería (varias sub-carpetas)
+	* Ahora comprueba si hay alguna imagen en la galería seleccionada. Si no mostrara un mensaje de error
